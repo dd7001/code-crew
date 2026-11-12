@@ -1,6 +1,7 @@
 
 import Link from "next/link";
 import Reveal from "@/components/Reveal";
+import ScrollWordmark from "@/components/ScrollWordmark";
 
 const services = [
   {
@@ -44,45 +45,8 @@ const services = [
 export default function Home() {
   return (
     <main>
-      {/* HERO */}
-      <section className="home-hero">
-        <div className="hero-line" />
-
-        <div className="home-hero-content">
-          <div className="hero-intro">
-            <span className="hero-status-dot" />
-            <span className="eyebrow">
-              INDEPENDENT DIGITAL TECHNOLOGY STUDIO
-            </span>
-          </div>
-
-          <h1 className="hero-title">
-            Ideas deserve
-            <br />
-            <span>better execution.</span>
-          </h1>
-
-          <p className="hero-description">
-            We design and build websites, applications and digital
-            experiences that help ambitious ideas move forward.
-          </p>
-
-          <div className="hero-buttons">
-            <Link href="/contact" className="button-primary">
-              Start a project <span>↗</span>
-            </Link>
-
-            <Link href="/services" className="hero-secondary">
-              Explore our services <span>↓</span>
-            </Link>
-          </div>
-
-          <div className="hero-bottom">
-            <span>DESIGN. ENGINEERING. DELIVERY.</span>
-            <span>SCROLL TO EXPLORE ↓</span>
-          </div>
-        </div>
-      </section>
+      {/* SCROLL-DRIVEN CODE CREW INTRO */}
+      <ScrollWordmark />
 
       {/* INTRODUCTION */}
       <section className="statement-section">
@@ -111,8 +75,13 @@ export default function Home() {
                 to be achieved.
               </p>
               <br />
+              <p>
+                Code Crew is led by Dylan Israel Orinyo, its Chief Executive
+                Officer, and operates remotely from Nairobi, Kenya.
+              </p>
+              <br />
               <Link href="/about" className="text-link">
-                Get to know us <span>↗</span>
+                Get to know us
               </Link>
             </div>
           </Reveal>
@@ -152,8 +121,6 @@ export default function Home() {
                     <h3>{service.title}</h3>
                     <p>{service.description}</p>
                   </div>
-
-                  <span className="service-arrow">↗</span>
                 </Link>
               </Reveal>
             ))}
@@ -162,7 +129,7 @@ export default function Home() {
           <Reveal>
             <div className="services-link">
               <Link href="/services" className="button-outline">
-                View all services <span>↗</span>
+                View all services
               </Link>
             </div>
           </Reveal>
@@ -239,7 +206,7 @@ export default function Home() {
             </p>
 
             <Link href="/contact" className="button-primary">
-              Start a conversation <span>↗</span>
+              Start a conversation
             </Link>
           </Reveal>
         </div>

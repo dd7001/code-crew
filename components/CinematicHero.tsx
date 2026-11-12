@@ -24,7 +24,7 @@ export default function CpuExperience() {
           </p>
 
           <span className="scroll-hint">
-            BUILT FROM THE INSIDE OUT <span>↗</span>
+            BUILT FROM THE INSIDE OUT
           </span>
         </div>
 

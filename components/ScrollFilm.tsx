@@ -72,7 +72,7 @@ export default function ScrollFilm() {
             <p className="eyebrow film-eyebrow">Independent digital studio · Est. 2026</p>
             <h1>Dream it.<br /><em>We build it.</em></h1>
             <p className="hero-description">Websites, applications and software made to move your business forward.</p>
-            <a className="hero-link" href="#services">Explore what we do <span>↓</span></a>
+            <a className="hero-link" href="#services">Explore what we do</a>
           </div>
           <div className="film-bottom">
             <span>DESIGN / ENGINEERING / DIGITAL</span>

@@ -1,0 +1,997 @@
+
+"use client";
+
+import { FormEvent, useState } from "react";
+import Reveal from "@/components/Reveal";
+
+type Opportunity = {
+  id: string;
+  title: string;
+  department: string;
+  type: "Paid position" | "Internship";
+  summary: string;
+  responsibilities: string[];
+  requirements: string[];
+  skills: string[];
+};
+
+const opportunities: Opportunity[] = [
+  // PAID POSITIONS
+  {
+    id: "frontend-developer",
+    title: "Frontend Developer",
+    department: "Web Development",
+    type: "Paid position",
+    summary: "Build responsive, accessible and polished web interfaces for modern digital products.",
+    responsibilities: [
+      "Develop and maintain responsive website interfaces.",
+      "Turn designs and requirements into reliable user experiences.",
+      "Work with APIs and collaborate with backend developers.",
+      "Test, debug and improve frontend performance.",
+    ],
+    requirements: [
+      "Experience building websites or web applications.",
+      "Understanding of responsive design and accessibility.",
+      "Ability to work with version control and collaborate remotely.",
+    ],
+    skills: ["HTML", "CSS", "JavaScript", "React", "Next.js"],
+  },
+  {
+    id: "backend-developer",
+    title: "Backend Developer",
+    department: "Software Engineering",
+    type: "Paid position",
+    summary: "Develop the server-side systems, APIs and services that power digital applications.",
+    responsibilities: [
+      "Build and maintain backend services and APIs.",
+      "Design and work with databases.",
+      "Implement authentication and application security practices.",
+      "Troubleshoot issues and improve reliability.",
+    ],
+    requirements: [
+      "Experience with backend development or API design.",
+      "Understanding of databases and server-side programming.",
+      "Ability to write maintainable and well-structured code.",
+    ],
+    skills: ["Node.js", "Python", "APIs", "SQL", "TypeScript"],
+  },
+  {
+    id: "full-stack-developer",
+    title: "Full-Stack Developer",
+    department: "Software Engineering",
+    type: "Paid position",
+    summary: "Work across frontend and backend systems to deliver complete web applications.",
+    responsibilities: [
+      "Build user-facing interfaces and backend functionality.",
+      "Integrate APIs, databases and third-party services.",
+      "Contribute to application architecture and technical decisions.",
+      "Test, maintain and improve deployed applications.",
+    ],
+    requirements: [
+      "Experience across frontend and backend development.",
+      "Understanding of databases, APIs and deployment workflows.",
+      "Comfortable working independently and with a remote team.",
+    ],
+    skills: ["React", "Next.js", "Node.js", "TypeScript", "SQL"],
+  },
+  {
+    id: "ui-ux-designer",
+    title: "UI/UX Designer",
+    department: "Product Design",
+    type: "Paid position",
+    summary: "Create clear, thoughtful and engaging digital experiences through user-centred design.",
+    responsibilities: [
+      "Create wireframes, user flows and interface designs.",
+      "Develop prototypes and communicate design decisions.",
+      "Work with developers to deliver consistent interfaces.",
+      "Review usability and improve existing experiences.",
+    ],
+    requirements: [
+      "A portfolio demonstrating interface or experience design.",
+      "Understanding of layout, typography and interaction design.",
+      "Ability to explain design decisions and receive feedback.",
+    ],
+    skills: ["Figma", "Prototyping", "Wireframing", "UI Design", "UX Research"],
+  },
+  {
+    id: "ai-engineer",
+    title: "AI Engineer",
+    department: "Artificial Intelligence",
+    type: "Paid position",
+    summary: "Develop practical AI-powered features, integrations and automation solutions.",
+    responsibilities: [
+      "Build and integrate AI-powered application features.",
+      "Work with model APIs and automation workflows.",
+      "Evaluate outputs, reliability and application performance.",
+      "Document technical work and communicate limitations.",
+    ],
+    requirements: [
+      "Programming experience and an interest in applied AI.",
+      "Understanding of APIs and data handling.",
+      "Ability to test and evaluate software behaviour responsibly.",
+    ],
+    skills: ["Python", "AI APIs", "Automation", "JavaScript", "Data"],
+  },
+  {
+    id: "cybersecurity-analyst",
+    title: "Cybersecurity Analyst",
+    department: "Cybersecurity",
+    type: "Paid position",
+    summary: "Help assess and improve the security of systems and applications with proper authorisation.",
+    responsibilities: [
+      "Review application and system security.",
+      "Identify, document and help assess potential vulnerabilities.",
+      "Support security testing within approved scopes.",
+      "Contribute to practical remediation recommendations.",
+    ],
+    requirements: [
+      "Understanding of networking, operating systems or application security.",
+      "Careful documentation and analytical skills.",
+      "Commitment to ethical, authorised security work.",
+    ],
+    skills: ["Networking", "Linux", "Security Fundamentals", "OWASP", "Risk Analysis"],
+  },
+  {
+    id: "computer-engineer",
+    title: "Computer Engineer",
+    department: "Computer Engineering",
+    type: "Paid position",
+    summary: "Work on computer systems, operating environments and technical engineering projects.",
+    responsibilities: [
+      "Investigate computer hardware and software issues.",
+      "Support system configuration and upgrade projects.",
+      "Document technical findings and solutions.",
+      "Contribute to systems and infrastructure projects remotely.",
+    ],
+    requirements: [
+      "Knowledge of computer systems and operating environments.",
+      "Strong troubleshooting and documentation skills.",
+      "Ability to work through technical problems independently.",
+    ],
+    skills: ["Computer Systems", "Windows", "Linux", "Networking", "Troubleshooting"],
+  },
+
+  // INTERNSHIPS
+  {
+    id: "web-development-intern",
+    title: "Web Development Intern",
+    department: "Web Development",
+    type: "Internship",
+    summary: "Develop practical web development skills while contributing to supervised projects.",
+    responsibilities: [
+      "Assist with building and improving website interfaces.",
+      "Practise responsive layouts and frontend fundamentals.",
+      "Learn to use Git and collaborative development workflows.",
+    ],
+    requirements: [
+      "Interest in learning web development.",
+      "Basic computer skills and willingness to practise.",
+      "Curiosity, communication and commitment.",
+    ],
+    skills: ["HTML", "CSS", "JavaScript", "React"],
+  },
+  {
+    id: "software-engineering-intern",
+    title: "Software Engineering Intern",
+    department: "Software Engineering",
+    type: "Internship",
+    summary: "Learn software engineering practices through guided development tasks and projects.",
+    responsibilities: [
+      "Assist with implementing and testing software features.",
+      "Learn how APIs and databases work.",
+      "Practise debugging, documentation and version control.",
+    ],
+    requirements: [
+      "Interest in programming and software development.",
+      "Willingness to learn new tools and concepts.",
+      "Ability to communicate progress and ask questions.",
+    ],
+    skills: ["Programming", "Git", "APIs", "Problem-solving"],
+  },
+  {
+    id: "design-intern",
+    title: "UI/UX Design Intern",
+    department: "Product Design",
+    type: "Internship",
+    summary: "Build design skills by helping shape clear and useful digital experiences.",
+    responsibilities: [
+      "Assist with wireframes and interface concepts.",
+      "Explore layout, typography and design systems.",
+      "Prepare prototypes and communicate design ideas.",
+    ],
+    requirements: [
+      "Interest in digital product design.",
+      "Willingness to learn design tools and workflows.",
+      "An eye for detail and openness to feedback.",
+    ],
+    skills: ["Figma", "UI Design", "Wireframes", "Prototyping"],
+  },
+  {
+    id: "cybersecurity-intern",
+    title: "Cybersecurity Intern",
+    department: "Cybersecurity",
+    type: "Internship",
+    summary: "Develop foundational security knowledge and learn responsible security practices.",
+    responsibilities: [
+      "Learn security fundamentals and common vulnerabilities.",
+      "Assist with approved research and documentation.",
+      "Explore safe testing environments and defensive practices.",
+    ],
+    requirements: [
+      "Interest in cybersecurity and computer systems.",
+      "Respect for legal and ethical testing boundaries.",
+      "Willingness to learn and document findings.",
+    ],
+    skills: ["Networking", "Linux", "Security Basics", "Research"],
+  },
+  {
+    id: "ai-automation-intern",
+    title: "AI & Automation Intern",
+    department: "Artificial Intelligence",
+    type: "Internship",
+    summary: "Explore how AI tools and automation can solve practical problems.",
+    responsibilities: [
+      "Assist with testing AI integrations and workflows.",
+      "Explore automation opportunities in applications.",
+      "Document experiments and evaluate results.",
+    ],
+    requirements: [
+      "Interest in AI, programming or automation.",
+      "Curiosity and willingness to experiment.",
+      "Ability to communicate findings clearly.",
+    ],
+    skills: ["Python", "AI Tools", "APIs", "Automation"],
+  },
+  {
+    id: "computer-engineering-intern",
+    title: "Computer Engineering Intern",
+    department: "Computer Engineering",
+    type: "Internship",
+    summary: "Build foundational knowledge of computer systems and technical troubleshooting.",
+    responsibilities: [
+      "Research computer hardware and operating systems.",
+      "Assist with documenting technical investigations.",
+      "Learn about networking and system configuration.",
+    ],
+    requirements: [
+      "Interest in computer systems and technology.",
+      "Basic computer literacy.",
+      "Patience and a practical approach to learning.",
+    ],
+    skills: ["Hardware", "Operating Systems", "Networking", "Troubleshooting"],
+  },
+];
+
+export default function CareersPage() {
+  const [selectedOpportunity, setSelectedOpportunity] =
+    useState<Opportunity | null>(null);
+
+  const [applicationType, setApplicationType] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState("");
+
+  const paidPositions = opportunities.filter(
+    (item) => item.type === "Paid position"
+  );
+
+  const internships = opportunities.filter(
+    (item) => item.type === "Internship"
+  );
+
+  function viewOpportunity(item: Opportunity) {
+    setSelectedOpportunity(item);
+    setSuccess(false);
+    setError("");
+
+    window.setTimeout(() => {
+      document.getElementById("opportunity-details")?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }, 100);
+  }
+
+  function startApplication(item: Opportunity) {
+    setSelectedOpportunity(item);
+    setApplicationType(item.type);
+    setSuccess(false);
+    setError("");
+
+    window.setTimeout(() => {
+      document.getElementById("careers-application")?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }, 100);
+  }
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    if (!selectedOpportunity) {
+      setError("Please select an opportunity before applying.");
+      return;
+    }
+
+    setSubmitting(true);
+    setError("");
+    setSuccess(false);
+
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+
+    const application = {
+      fullName: formData.get("fullName"),
+      email: formData.get("email"),
+      phone: formData.get("phone"),
+      location: formData.get("location"),
+      applicationType,
+      opportunity: selectedOpportunity.title,
+      opportunityId: selectedOpportunity.id,
+      education: formData.get("education"),
+      skills: formData.get("skills"),
+      experience: formData.get("experience"),
+      portfolio: formData.get("portfolio"),
+      motivation: formData.get("motivation"),
+    };
+
+    try {
+      const response = await fetch("/api/careers", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(application),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(
+          result.error || "Unable to submit your application."
+        );
+      }
+
+      setSuccess(true);
+      form.reset();
+      setSelectedOpportunity(null);
+      setApplicationType("");
+    } catch (err) {
+      setError(
+        err instanceof Error
+          ? err.message
+          : "Something went wrong. Please try again."
+      );
+    } finally {
+      setSubmitting(false);
+    }
+  }
+
+  function renderOpportunityList(items: Opportunity[]) {
+    return (
+      <div className="careers-opportunity-list">
+        {items.map((item, index) => (
+          <Reveal key={item.id} delay={index * 45}>
+            <article className="careers-opportunity">
+              <span className="careers-opportunity-number">
+                {String(index + 1).padStart(2, "0")}
+              </span>
+
+              <div className="careers-opportunity-content">
+                <div className="careers-role-meta">
+                  <span>{item.department}</span>
+                  <span>100% Fully Remote</span>
+                </div>
+
+                <h3>{item.title}</h3>
+                <p>{item.summary}</p>
+              </div>
+
+              <button
+                type="button"
+                className="careers-opportunity-link"
+                onClick={() => viewOpportunity(item)}
+              >
+                View details
+              </button>
+            </article>
+          </Reveal>
+        ))}
+      </div>
+    );
+  }
+
+  return (
+    <main className="careers-page">
+      {/* HERO */}
+      <section className="page-hero careers-hero">
+        <div className="container">
+          <Reveal>
+            <span className="eyebrow">
+              CAREERS / WORK WITH CODE CREW
+            </span>
+
+            <h1>
+              Make your next move.
+              <br />
+              <span className="accent-text">
+                Build what matters.
+              </span>
+            </h1>
+
+            <p>
+              Explore opportunities across technology, design and engineering.
+              Join a fully remote team working on meaningful digital projects.
+            </p>
+
+            <div className="careers-hero-actions">
+              <a href="#paid-positions" className="button-primary">
+                Explore vacancies
+              </a>
+
+              <a href="#internships" className="careers-text-link">
+                Explore internships
+              </a>
+            </div>
+
+            <div className="services-hero-meta">
+              <span>01 — EXPLORE</span>
+              <span>02 — APPLY</span>
+              <span>03 — GROW</span>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* INTRODUCTION */}
+      <section className="section careers-introduction">
+        <div className="container">
+          <Reveal>
+            <span className="eyebrow">
+              OPPORTUNITIES AT CODE CREW
+            </span>
+
+            <h2 className="section-heading">
+              Different skills.
+              <br />
+              <span className="accent-text">
+                One remote team.
+              </span>
+            </h2>
+
+            <p className="section-description">
+              Whether you are an experienced professional or starting your
+              technology journey, explore the opportunities below. Every
+              position and internship is fully remote.
+            </p>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* BENEFITS */}
+      <section className="careers-benefits">
+        <div className="container">
+          <Reveal>
+            <span className="eyebrow">
+              THE CODE CREW APPROACH
+            </span>
+
+            <h2 className="section-heading">
+              Thoughtful work.
+              <br />
+              <span className="accent-text">
+                Room to grow.
+              </span>
+            </h2>
+          </Reveal>
+
+          <div className="careers-benefits-grid">
+            {[
+              {
+                number: "01",
+                title: "Remote collaboration",
+                description:
+                  "Work with the team remotely, wherever your approved working location is.",
+              },
+              {
+                number: "02",
+                title: "Meaningful projects",
+                description:
+                  "Contribute to practical technology and digital development work.",
+              },
+              {
+                number: "03",
+                title: "Continuous learning",
+                description:
+                  "Develop your skills through collaboration, feedback and experience.",
+              },
+              {
+                number: "04",
+                title: "Build with purpose",
+                description:
+                  "Help create useful, thoughtful and reliable digital solutions.",
+              },
+            ].map((benefit, index) => (
+              <Reveal key={benefit.number} delay={index * 70}>
+                <article className="careers-benefit-card">
+                  <span>{benefit.number}</span>
+                  <h3>{benefit.title}</h3>
+                  <p>{benefit.description}</p>
+                </article>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* PAID POSITIONS */}
+      <section
+        className="section careers-opportunities"
+        id="paid-positions"
+      >
+        <div className="container">
+          <Reveal>
+            <span className="eyebrow">
+              CAREER OPPORTUNITIES / 01
+            </span>
+
+            <h2 className="section-heading">
+              Paid positions.
+              <br />
+              <span className="accent-text">
+                Bring your expertise.
+              </span>
+            </h2>
+
+            <p className="section-description">
+              Explore professional opportunities across development,
+              engineering, design, artificial intelligence and security.
+            </p>
+          </Reveal>
+
+          {renderOpportunityList(paidPositions)}
+        </div>
+      </section>
+
+      {/* INTERNSHIPS */}
+      <section
+        className="section careers-opportunities careers-internships"
+        id="internships"
+      >
+        <div className="container">
+          <Reveal>
+            <span className="eyebrow">
+              CAREER OPPORTUNITIES / 02
+            </span>
+
+            <h2 className="section-heading">
+              Internship programme.
+              <br />
+              <span className="accent-text">
+                Start building.
+              </span>
+            </h2>
+
+            <p className="section-description">
+              Develop practical skills, explore your interests and gain
+              experience through technology-focused internship opportunities.
+            </p>
+          </Reveal>
+
+          {renderOpportunityList(internships)}
+        </div>
+      </section>
+
+      {/* SELECTED OPPORTUNITY DETAILS */}
+      {selectedOpportunity && (
+        <section
+          className="careers-detail-section"
+          id="opportunity-details"
+        >
+          <div className="container">
+            <Reveal>
+              <div className="careers-detail">
+                <div className="careers-detail-top">
+                  <div>
+                    <span className="eyebrow">
+                      {selectedOpportunity.type.toUpperCase()} / ROLE DETAILS
+                    </span>
+
+                    <h2>{selectedOpportunity.title}</h2>
+                    <p>{selectedOpportunity.department}</p>
+                  </div>
+
+                  <button
+                    type="button"
+                    className="careers-close-detail"
+                    onClick={() => setSelectedOpportunity(null)}
+                  >
+                    Close details <span>×</span>
+                  </button>
+                </div>
+
+                <div className="careers-role-badges">
+                  <span>100% Fully Remote</span>
+                  <span>{selectedOpportunity.type}</span>
+                </div>
+
+                <p className="careers-detail-summary">
+                  {selectedOpportunity.summary}
+                </p>
+
+                <div className="careers-detail-grid">
+                  <div>
+                    <h3>What you will do</h3>
+                    <ul>
+                      {selectedOpportunity.responsibilities.map((item) => (
+                        <li key={item}>{item}</li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  <div>
+                    <h3>What we are looking for</h3>
+                    <ul>
+                      {selectedOpportunity.requirements.map((item) => (
+                        <li key={item}>{item}</li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+
+                <div className="careers-detail-skills">
+                  <h3>Relevant skills and technologies</h3>
+
+                  <div>
+                    {selectedOpportunity.skills.map((skill) => (
+                      <span key={skill}>{skill}</span>
+                    ))}
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  className="button-primary"
+                  onClick={() => startApplication(selectedOpportunity)}
+                >
+                  Apply for this opportunity
+                </button>
+              </div>
+            </Reveal>
+          </div>
+        </section>
+      )}
+
+      {/* APPLICATION FORM */}
+      <section
+        className="careers-application"
+        id="careers-application"
+      >
+        <div className="container">
+          <div className="careers-application-layout">
+            <Reveal>
+              <div className="careers-application-info">
+                <span className="eyebrow">
+                  TAKE THE NEXT STEP
+                </span>
+
+                <h2>
+                  Tell us
+                  <br />
+                  <span className="accent-text">
+                    about yourself.
+                  </span>
+                </h2>
+
+                <p>
+                  Complete the application form to introduce yourself and
+                  explain why you are interested in joining Code Crew.
+                </p>
+
+                <div className="careers-contact-note">
+                  <span className="eyebrow">
+                    HAVE A QUESTION?
+                  </span>
+
+                  <a href="tel:+254732443407">
+                    +254 732 443 407
+                  </a>
+
+                  <p>
+                    Contact our team if you need more information about an
+                    opportunity.
+                  </p>
+                </div>
+              </div>
+            </Reveal>
+
+            <Reveal delay={100}>
+              <form
+                className="careers-form"
+                onSubmit={handleSubmit}
+              >
+                <div className="careers-form-heading">
+                  <span className="eyebrow">
+                    APPLICATION FORM
+                  </span>
+
+                  <p>Fields marked with * are required.</p>
+                </div>
+
+                <div className="careers-form-grid">
+                  <div className="careers-field careers-field-full">
+                    <label htmlFor="applicationType">
+                      Application category *
+                    </label>
+
+                    <select
+                      id="applicationType"
+                      value={applicationType}
+                      onChange={(event) => {
+                        setApplicationType(event.target.value);
+                        setSelectedOpportunity(null);
+                      }}
+                      required
+                    >
+                      <option value="">Select a category</option>
+                      <option value="Paid position">Paid position</option>
+                      <option value="Internship">Internship</option>
+                    </select>
+                  </div>
+
+                  <div className="careers-field careers-field-full">
+                    <label htmlFor="opportunity">
+                      Opportunity *
+                    </label>
+
+                    <select
+                      id="opportunity"
+                      value={selectedOpportunity?.id ?? ""}
+                      onChange={(event) => {
+                        const item = opportunities.find(
+                          (opportunity) =>
+                            opportunity.id === event.target.value
+                        );
+
+                        if (item) {
+                          setSelectedOpportunity(item);
+                          setApplicationType(item.type);
+                        }
+                      }}
+                      required
+                    >
+                      <option value="">Select an opportunity</option>
+
+                      {opportunities
+                        .filter(
+                          (item) =>
+                            !applicationType ||
+                            item.type === applicationType
+                        )
+                        .map((item) => (
+                          <option
+                            key={item.id}
+                            value={item.id}
+                          >
+                            {item.title}
+                          </option>
+                        ))}
+                    </select>
+                  </div>
+
+                  <div className="careers-field careers-field-full">
+                    <label htmlFor="fullName">Full name *</label>
+
+                    <input
+                      id="fullName"
+                      name="fullName"
+                      type="text"
+                      placeholder="Your full name"
+                      required
+                      maxLength={120}
+                    />
+                  </div>
+
+                  <div className="careers-field">
+                    <label htmlFor="email">Email address *</label>
+
+                    <input
+                      id="email"
+                      name="email"
+                      type="email"
+                      placeholder="you@example.com"
+                      required
+                      maxLength={254}
+                    />
+                  </div>
+
+                  <div className="careers-field">
+                    <label htmlFor="phone">Phone number *</label>
+
+                    <input
+                      id="phone"
+                      name="phone"
+                      type="tel"
+                      placeholder="+254..."
+                      required
+                      maxLength={30}
+                    />
+                  </div>
+
+                  <div className="careers-field careers-field-full">
+                    <label htmlFor="location">
+                      Current location *
+                    </label>
+
+                    <input
+                      id="location"
+                      name="location"
+                      type="text"
+                      placeholder="City and country"
+                      required
+                      maxLength={120}
+                    />
+
+                    <span className="careers-field-hint">
+                      The opportunity itself is fully remote.
+                    </span>
+                  </div>
+
+                  <div className="careers-field careers-field-full">
+                    <label htmlFor="education">
+                      Education / qualifications
+                    </label>
+
+                    <input
+                      id="education"
+                      name="education"
+                      type="text"
+                      placeholder="Your education or relevant qualifications"
+                      maxLength={250}
+                    />
+                  </div>
+
+                  <div className="careers-field careers-field-full">
+                    <label htmlFor="skills">
+                      Skills and technologies *
+                    </label>
+
+                    <textarea
+                      id="skills"
+                      name="skills"
+                      rows={3}
+                      placeholder="Describe your relevant skills and technologies."
+                      required
+                      maxLength={3000}
+                    />
+                  </div>
+
+                  <div className="careers-field careers-field-full">
+                    <label htmlFor="experience">
+                      Relevant experience *
+                    </label>
+
+                    <textarea
+                      id="experience"
+                      name="experience"
+                      rows={4}
+                      placeholder="Describe your work experience, projects or practical experience. If you are starting out, tell us about what you have learned or built."
+                      required
+                      maxLength={4000}
+                    />
+                  </div>
+
+                  <div className="careers-field careers-field-full">
+                    <label htmlFor="portfolio">
+                      Portfolio / GitHub / LinkedIn (optional)
+                    </label>
+
+                    <input
+                      id="portfolio"
+                      name="portfolio"
+                      type="url"
+                      placeholder="https://..."
+                      maxLength={500}
+                    />
+
+                    <span className="careers-field-hint">
+                      No CV, certificates or other document uploads are required.
+                    </span>
+                  </div>
+
+                  <div className="careers-field careers-field-full">
+                    <label htmlFor="motivation">
+                      Why do you want to join Code Crew? *
+                    </label>
+
+                    <textarea
+                      id="motivation"
+                      name="motivation"
+                      rows={5}
+                      placeholder="Tell us about your interests, goals and what you could bring to the team."
+                      required
+                      maxLength={5000}
+                    />
+                  </div>
+                </div>
+
+                {error && (
+                  <div
+                    className="careers-form-error"
+                    role="alert"
+                  >
+                    {error}
+                  </div>
+                )}
+
+                {success && (
+                  <div
+                    className="careers-form-success"
+                    role="status"
+                  >
+                    <strong>Application received.</strong>
+
+                    <p>
+                      Thank you for applying to Code Crew. Your application
+                      has been submitted successfully.
+                    </p>
+                  </div>
+                )}
+
+                <button
+                  type="submit"
+                  className="button-primary careers-submit"
+                  disabled={submitting}
+                >
+                  {submitting
+                    ? "Submitting application..."
+                    : "Submit application"}
+
+                  
+                </button>
+
+                <p className="careers-privacy">
+                  By submitting this form, you agree that Code Crew may use
+                  the information provided to review your application and
+                  contact you about it. Do not include passwords or sensitive
+                  personal information.
+                </p>
+              </form>
+            </Reveal>
+          </div>
+        </div>
+      </section>
+
+      {/* FINAL CTA */}
+      <section className="cta-section">
+        <div className="container">
+          <Reveal>
+            <span className="eyebrow">
+              YOUR NEXT CHAPTER
+            </span>
+
+            <h2>
+              Ready to build
+              <br />
+              <span className="accent-text">
+                something meaningful?
+              </span>
+            </h2>
+
+            <p>
+              Explore an opportunity and introduce yourself to Code Crew.
+            </p>
+
+            <a
+              href="#paid-positions"
+              className="button-primary"
+            >
+              Explore opportunities
+            </a>
+          </Reveal>
+        </div>
+      </section>
+    </main>
+  );
+}

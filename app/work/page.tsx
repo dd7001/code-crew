@@ -55,7 +55,7 @@ function CommercePreview() {
               <span>THE EVERYDAY COLLECTION</span>
               <h4>Made for<br />living well.</h4>
               <p>Considered objects for considered spaces.</p>
-              <span className="commerce-link">DISCOVER THE COLLECTION ↗</span>
+              <span className="commerce-link">DISCOVER THE COLLECTION </span>
             </div>
 
             <div className="commerce-product">
@@ -68,7 +68,7 @@ function CommercePreview() {
 
           <div className="commerce-bottom">
             <span>DESIGNED WITH INTENTION</span>
-            <span>SCROLL TO EXPLORE ↓</span>
+            <span>SCROLL TO EXPLORE </span>
           </div>
         </div>
       </div>
@@ -108,9 +108,9 @@ function DashboardPreview() {
           </div>
 
           <div className="dashboard-stats">
-            <div><small>Total revenue</small><strong>$24,680</strong><em>↗ 12.8%</em></div>
-            <div><small>Active projects</small><strong>18</strong><em>↗ 4.2%</em></div>
-            <div><small>New clients</small><strong>126</strong><em>↗ 8.6%</em></div>
+            <div><small>Total revenue</small><strong>$24,680</strong><em> 12.8%</em></div>
+            <div><small>Active projects</small><strong>18</strong><em> 4.2%</em></div>
+            <div><small>New clients</small><strong>126</strong><em> 8.6%</em></div>
           </div>
 
           <div className="dashboard-chart">
@@ -153,7 +153,7 @@ function EditorialPreview() {
           </div>
           <div className="editorial-footer">
             <span>ISSUE NO. 01 — THE ART OF SPACE</span>
-            <span>EXPLORE THE JOURNAL ↗</span>
+            <span>EXPLORE THE JOURNAL </span>
           </div>
         </div>
       </div>
@@ -161,6 +161,14 @@ function EditorialPreview() {
     </div>
   );
 }
+
+export const metadata = {
+  title: 'Our Work | Digital Design and Development Concepts',
+  description: "Explore Code Crew's portfolio of digital design and development concepts, including e-commerce experiences, dashboards and editorial websites.",
+  alternates: {
+    canonical: '/work',
+  },
+};
 
 export default function WorkPage() {
   return (
@@ -247,7 +255,7 @@ export default function WorkPage() {
               home? Let's work out what it could become.
             </p>
             <Link href="/contact" className="button-primary">
-              Start a project <span>↗</span>
+              Start a project
             </Link>
           </Reveal>
         </div>

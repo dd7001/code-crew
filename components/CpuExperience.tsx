@@ -94,7 +94,7 @@ export default function CpuExperience() {
           </p>
 
           <span className="scroll-hint">
-            SCROLL TO EXPLORE <span>↓</span>
+            SCROLL TO EXPLORE
           </span>
         </div>
 
